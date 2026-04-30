@@ -4,6 +4,30 @@ All notable changes to ThoxCode are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [thoxcode 0.1.3] — 2026-04-30
+
+### Added
+
+- **Terminal logo** — `thoxcode` now opens with a Thox-native ASCII
+  wordmark in cyan + accent purple, followed by the tagline
+  `Thox.ai edge agent · Powered by Claude · v0.1.3`. Renders with
+  upper-half / lower-half block characters; falls back to plain
+  ASCII when the locale isn't UTF-8 or `THOXCODE_FORCE_ASCII=1` is
+  set.
+- **`--version` / `-v`** — prints `thoxcode 0.1.3` and exits.
+- **`--no-banner`** flag and **`THOXCODE_NO_BANNER=1`** env var to
+  suppress the logo on a single run or globally.
+- **`NO_COLOR`** / **`THOXCODE_NO_COLOR`** are honored.
+
+### Notes
+
+- CLI-only release. The logo deliberately does not mimic Claude
+  Code's chrome (per Anthropic's
+  [Agent SDK branding guidelines](https://code.claude.com/docs/en/agent-sdk/overview#branding-guidelines)).
+- Banner is auto-suppressed when stdout is not a TTY (piped output,
+  CI), so e.g. `thoxcode "…" | tee log` still produces clean machine
+  output.
+
 ## [0.1.2] — 2026-04-30
 
 ### Fixed

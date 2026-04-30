@@ -3,7 +3,26 @@ import { runAgent, resolveAuth, ThoxAuthError } from "thoxcode-core";
 import type { ThoxEvent } from "thoxcode-core";
 import { runViaDaemon } from "thoxcode-daemon";
 import kleur from "kleur";
-import { banner } from "./banner.js";
+import { bigBanner } from "./banner.js";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
+
+const PKG_VERSION = (() => {
+  try {
+    const here = dirname(fileURLToPath(import.meta.url));
+    const pkg = JSON.parse(
+      readFileSync(resolve(here, "..", "package.json"), "utf8"),
+    ) as { version?: string };
+    return pkg.version ?? "0.0.0";
+  } catch {
+    return "0.0.0";
+  }
+})();
+
+const BANNER_DISABLED =
+  process.env.THOXCODE_NO_BANNER !== undefined ||
+  process.stdout.isTTY === false;
 
 interface CliArgs {
   prompt: string;
@@ -12,6 +31,8 @@ interface CliArgs {
   thoxos: boolean;
   socket?: string;
   showHelp: boolean;
+  showVersion: boolean;
+  noBanner: boolean;
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -21,12 +42,16 @@ function parseArgs(argv: string[]): CliArgs {
     yolo: false,
     thoxos: false,
     showHelp: false,
+    showVersion: false,
+    noBanner: false,
   };
   const positional: string[] = [];
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === undefined) continue;
     if (a === "--help" || a === "-h") args.showHelp = true;
+    else if (a === "--version" || a === "-v") args.showVersion = true;
+    else if (a === "--no-banner") args.noBanner = true;
     else if (a === "--yolo") args.yolo = true;
     else if (a === "--thoxos") args.thoxos = true;
     else if (a === "--cwd") {
@@ -47,19 +72,29 @@ function parseArgs(argv: string[]): CliArgs {
   return args;
 }
 
+function maybeBanner(noBanner: boolean): void {
+  if (noBanner || BANNER_DISABLED) return;
+  console.log(bigBanner({ version: PKG_VERSION }));
+}
+
 function help() {
-  console.log(banner());
-  console.log("");
+  console.log(bigBanner({ version: PKG_VERSION }));
   console.log(kleur.bold("Usage:"));
   console.log("  thoxcode <prompt>            Run a one-shot task (in-process)");
   console.log("  thoxcode --thoxos <prompt>   Run via the local thoxcoded socket");
   console.log("  thoxcode --socket <path>     Override daemon socket path");
   console.log("  thoxcode --cwd <dir> ...     Override working directory");
   console.log("  thoxcode --yolo ...          Auto-accept edits (acceptEdits)");
+  console.log("  thoxcode --no-banner ...     Suppress the logo on this run");
+  console.log("  thoxcode --version, -v       Print version and exit");
+  console.log("  thoxcode --help, -h          Show this help");
   console.log("");
   console.log(kleur.bold("Auth:"));
   console.log("  Set ANTHROPIC_API_KEY in your shell. ThoxCode passes it");
   console.log("  through to Claude as a BYOK key — never logged or persisted.");
+  console.log("");
+  console.log(kleur.bold("Quiet mode:"));
+  console.log("  --no-banner OR  export THOXCODE_NO_BANNER=1");
   console.log("");
 }
 
@@ -103,13 +138,16 @@ function jsonOneLine(v: unknown): string {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
+  if (args.showVersion) {
+    console.log(`thoxcode ${PKG_VERSION}`);
+    process.exit(0);
+  }
   if (args.showHelp || !args.prompt) {
     help();
     process.exit(args.showHelp ? 0 : 1);
   }
 
-  console.log(banner());
-  console.log("");
+  maybeBanner(args.noBanner);
 
   const ac = new AbortController();
   process.on("SIGINT", () => {
