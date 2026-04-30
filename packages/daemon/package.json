@@ -1,6 +1,6 @@
 {
   "name": "thoxcode-daemon",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "ThoxCode daemon for ThoxOS — Unix socket service exposing the agent over JSONL framing. Includes systemd unit and install script.",
   "keywords": [
     "thoxcode",

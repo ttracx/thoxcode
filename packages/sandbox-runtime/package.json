@@ -1,6 +1,6 @@
 {
   "name": "thoxcode-sandbox-runtime",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Vercel Sandbox MCP tool adapters for ThoxCode — Bash/Read/Write/Edit/Ls executed inside per-session Firecracker microVMs.",
   "keywords": [
     "thoxcode",

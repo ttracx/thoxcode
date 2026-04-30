@@ -1,6 +1,6 @@
 {
   "name": "thoxcode-core",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "ThoxCode agent runtime — Claude Agent SDK + Thox system prompt + ThoxQuantum MCP tools.",
   "keywords": [
     "thoxcode",
