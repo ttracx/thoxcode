@@ -44,7 +44,7 @@ function print() {
   const lines = [
     "",
     `${cyan}${bold}  ThoxCode${reset}${dim} · Powered by Claude${reset}`,
-    `${dim}  Thox.ai's branded coding agent${reset}`,
+    `${dim}  THOX.ai's branded coding agent${reset}`,
     "",
     `  ${bold}Next steps:${reset}`,
     `  ${dim}1.${reset} Set your Anthropic API key:`,

@@ -1,6 +1,6 @@
 # ThoxCode
 
-> Thox.ai's branded coding agent. **Powered by Claude.**
+> THOX.ai's branded coding agent. **Powered by Claude.**
 
 [![CLI on npm](https://img.shields.io/npm/v/thoxcode.svg?label=thoxcode&color=22d3ee)](https://www.npmjs.com/package/thoxcode)
 [![core on npm](https://img.shields.io/npm/v/thoxcode-core.svg?label=thoxcode-core&color=22d3ee)](https://www.npmjs.com/package/thoxcode-core)
@@ -177,10 +177,10 @@ Issues and PRs welcome at https://github.com/ttracx/thoxcode/issues.
   gVisor/Kata/Firecracker adapters). ThoxCode currently uses Vercel
   Sandbox for its web mode; future versions may target SandThox as an
   alternative execution backend.
-- [ThoxQuantum](https://github.com/ttracx/Thox.ai) — quantum circuit
+- [ThoxQuantum](https://github.com/ttracx/THOX.ai) — quantum circuit
   emulation runtime (cuStateVec / cuTensorNet on Jetson Orin) that
   ThoxCode's MCP tools target by default.
 
 ## License
 
-MIT © Thox.ai. See [LICENSE](LICENSE).
+MIT © THOX.ai. See [LICENSE](LICENSE).

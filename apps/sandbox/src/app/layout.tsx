@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "ThoxCode Sandbox · Powered by Claude",
   description:
-    "Browser playground for ThoxCode — Thox.ai's coding agent running in isolated Vercel Sandbox microVMs.",
+    "Browser playground for ThoxCode — THOX.ai's coding agent running in isolated Vercel Sandbox microVMs.",
   icons: {
     icon: "/favicon.ico",
   },

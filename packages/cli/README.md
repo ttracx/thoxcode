@@ -1,6 +1,6 @@
 # thoxcode
 
-> Thox.ai's branded coding agent. **Powered by Claude.**
+> THOX.ai's branded coding agent. **Powered by Claude.**
 
 [![npm](https://img.shields.io/npm/v/thoxcode.svg)](https://www.npmjs.com/package/thoxcode)
 [![license](https://img.shields.io/npm/l/thoxcode.svg)](https://github.com/ttracx/thoxcode/blob/main/LICENSE)
@@ -69,4 +69,4 @@ all UI is Thox-native (Nova Space Gray on Quantum Cyan accents).
 
 ## License
 
-MIT © Thox.ai
+MIT © THOX.ai

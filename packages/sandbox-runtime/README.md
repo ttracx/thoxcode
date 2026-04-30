@@ -59,4 +59,4 @@ hosts. See [Vercel Sandbox auth](https://vercel.com/docs/vercel-sandbox/concepts
 
 ## License
 
-MIT © Thox.ai
+MIT © THOX.ai

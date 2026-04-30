@@ -55,4 +55,4 @@ for await (const event of runViaDaemon({
 
 ## License
 
-MIT © Thox.ai
+MIT © THOX.ai

@@ -2,7 +2,7 @@
   "name": "thoxcode",
   "version": "0.1.0",
   "private": true,
-  "description": "ThoxCode — Thox.ai's branded coding agent. Powered by Claude.",
+  "description": "ThoxCode — THOX.ai's branded coding agent. Powered by Claude.",
   "license": "UNLICENSED",
   "type": "module",
   "engines": {

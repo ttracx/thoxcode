@@ -58,18 +58,15 @@ export function bigBanner(opts: BannerOptions = {}): string {
   const dim = (s: string) => (useColor ? kleur.dim(s) : s);
 
   const lines = utf8 ? THOX_LOGO_LINES : ASCII_FALLBACK_LINES;
-  const version = opts.version ? dim(`v${opts.version}`) : "";
 
+  // Tagline: "THOX.ai · Powered by Claude"
+  // Version is intentionally omitted — `thoxcode --version` exposes it.
+  // "Powered by Claude" attribution stays per Anthropic Agent SDK terms.
   const tagline = [
-    dim("·"),
-    cyan("Thox.ai"),
-    dim("edge agent"),
+    cyan("THOX.ai"),
     dim("·"),
     accent("Powered by Claude"),
-    version ? `${dim("·")} ${version}` : "",
-  ]
-    .filter(Boolean)
-    .join(" ");
+  ].join(" ");
 
   return [
     "",

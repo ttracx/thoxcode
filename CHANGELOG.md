@@ -4,13 +4,26 @@ All notable changes to ThoxCode are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [thoxcode 0.1.4] — 2026-04-30
+
+### Changed
+
+- **Tagline trimmed** to `THOX.ai · Powered by Claude` (drops "edge
+  agent" and the inline version — `thoxcode --version` still exposes it).
+- **Brand mark uppercased** — global rename `Thox.ai → THOX.ai` across
+  all user-facing copy (banner, READMEs, system prompt, postinstall,
+  Next.js metadata, root README "Related projects", CHANGELOG entries).
+
+The "Powered by Claude" attribution remains required by Anthropic's
+Agent SDK terms — see the v0.1.0 notes.
+
 ## [thoxcode 0.1.3] — 2026-04-30
 
 ### Added
 
 - **Terminal logo** — `thoxcode` now opens with a Thox-native ASCII
   wordmark in cyan + accent purple, followed by the tagline
-  `Thox.ai edge agent · Powered by Claude · v0.1.3`. Renders with
+  `THOX.ai edge agent · Powered by Claude · v0.1.3`. Renders with
   upper-half / lower-half block characters; falls back to plain
   ASCII when the locale isn't UTF-8 or `THOXCODE_FORCE_ASCII=1` is
   set.

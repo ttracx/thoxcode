@@ -57,4 +57,4 @@ type ThoxEvent =
 
 ## License
 
-MIT © Thox.ai
+MIT © THOX.ai
