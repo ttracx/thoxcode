@@ -1,6 +1,6 @@
 {
   "name": "thoxcode",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ThoxCode — Thox.ai's branded coding agent. Powered by Claude. Install globally for the `thoxcode` CLI.",
   "keywords": [
     "thoxcode",
@@ -30,6 +30,7 @@
   "main": "./dist/bin.js",
   "files": [
     "dist",
+    "scripts",
     "README.md",
     "LICENSE"
   ],
@@ -41,7 +42,8 @@
     "dev": "tsx src/bin.ts",
     "start": "node dist/bin.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "postinstall": "node ./scripts/postinstall.mjs"
   },
   "dependencies": {
     "thoxcode-core": "workspace:*",

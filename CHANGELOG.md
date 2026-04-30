@@ -4,6 +4,24 @@ All notable changes to ThoxCode are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [thoxcode 0.1.1] — 2026-04-30
+
+### Added
+
+- **Postinstall welcome** — `npm i -g thoxcode` now prints a short
+  next-steps panel (set `ANTHROPIC_API_KEY`, sample command, links to
+  README / ROADMAP / issues). Quiet in CI, non-TTY, `--silent`, or
+  when `THOXCODE_DISABLE_POSTINSTALL=1`.
+- **`ROADMAP.md`** — concrete plan through v1.0: CI/CD via Trusted
+  Publishers, web-bridge npm release, real Supabase OAuth,
+  `thoxcode-sandthox-runtime` execution backend, file-tree pane,
+  MagStack distributed quantum tools.
+
+### Notes
+
+- CLI-only release. `thoxcode-core`, `thoxcode-sandbox-runtime`, and
+  `thoxcode-daemon` remain at `0.1.0`.
+
 ## [0.1.0] — 2026-04-30
 
 First public release. Published to npm, sources at
