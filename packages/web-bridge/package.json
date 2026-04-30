@@ -1,0 +1,26 @@
+{
+  "name": "@thoxcode/web-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ThoxCode web bridge — Hono server streaming agent events to sandbox.thox.ai over SSE.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@thoxcode/core": "workspace:*",
+    "@thoxcode/sandbox-runtime": "workspace:*",
+    "hono": "^4.6.14",
+    "jose": "^5.9.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

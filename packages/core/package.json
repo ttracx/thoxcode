@@ -1,0 +1,26 @@
+{
+  "name": "@thoxcode/core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ThoxCode agent runtime — Claude Agent SDK + Thox system prompt + MCP tools.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./tools/thox-quantum": "./dist/tools/thox-quantum.js",
+    "./system-prompt": "./dist/system-prompt.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.123",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

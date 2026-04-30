@@ -1,0 +1,25 @@
+{
+  "name": "@thoxcode/sandbox-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Vercel Sandbox tool adapters for ThoxCode — Bash/Read/Write/Edit/Ls executed inside per-session Firecracker microVMs.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.123",
+    "@vercel/sandbox": "^1.10.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

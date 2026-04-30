@@ -1,0 +1,27 @@
+{
+  "name": "@thoxcode/cli",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ThoxCode terminal client. Powered by Claude.",
+  "type": "module",
+  "bin": {
+    "thoxcode": "./dist/bin.js"
+  },
+  "main": "./dist/bin.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/bin.ts",
+    "start": "node dist/bin.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@thoxcode/core": "workspace:*",
+    "@thoxcode/daemon": "workspace:*",
+    "kleur": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

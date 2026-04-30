@@ -1,0 +1,36 @@
+[Unit]
+Description=ThoxCode daemon (ThoxOS) — local agent service over Unix socket
+Documentation=https://thox.ai
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=thoxcode
+Group=thoxcode
+ExecStartPre=/bin/mkdir -p /run/thoxcode
+ExecStartPre=/bin/chown thoxcode:thoxcode /run/thoxcode
+ExecStart=/usr/bin/env node /opt/thoxcode/dist/server.js
+Restart=on-failure
+RestartSec=3s
+
+# Hardening — runs on Jetson Orin alongside other ThoxOS services
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=false
+ReadWritePaths=/run/thoxcode /var/log/thoxcode
+RuntimeDirectory=thoxcode
+RuntimeDirectoryMode=0755
+
+# Environment file holds ANTHROPIC_API_KEY and tunables.
+EnvironmentFile=-/etc/thoxcode/environment
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=thoxcoded
+
+[Install]
+WantedBy=multi-user.target
