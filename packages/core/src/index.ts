@@ -1,4 +1,10 @@
-export { runAgent, type RunAgentInput } from "./runtime.js";
+export {
+  runAgent,
+  runInteractive,
+  type RunAgentInput,
+  type RunInteractiveInput,
+  type InteractiveSession,
+} from "./runtime.js";
 export {
   thoxSystemPrompt,
   THOXCODE_IDENTITY,

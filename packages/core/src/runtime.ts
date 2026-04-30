@@ -2,7 +2,9 @@ import {
   query,
   type Options,
   type SDKMessage,
+  type SDKUserMessage,
   type McpServerConfig,
+  type CanUseTool,
 } from "@anthropic-ai/claude-agent-sdk";
 import { thoxSystemPrompt } from "./system-prompt.js";
 import { authToSdkEnv, type AuthContext } from "./auth.js";
@@ -292,4 +294,176 @@ function mapSdkMessage(
   }
 
   return events;
+}
+
+// ─── Interactive (multi-turn streaming-input) session ──────────────────────
+
+/**
+ * Async queue feeding SDKUserMessage values into a streaming-input query().
+ * Producers call push(text); the consumer (the SDK) iterates via for-await.
+ */
+class UserMessageQueue implements AsyncIterable<SDKUserMessage> {
+  private buf: SDKUserMessage[] = [];
+  private resolvers: Array<(r: IteratorResult<SDKUserMessage>) => void> = [];
+  private closed = false;
+
+  push(text: string): void {
+    if (this.closed) return;
+    const msg: SDKUserMessage = {
+      type: "user",
+      message: { role: "user", content: text },
+      parent_tool_use_id: null,
+    };
+    const r = this.resolvers.shift();
+    if (r) r({ value: msg, done: false });
+    else this.buf.push(msg);
+  }
+
+  close(): void {
+    if (this.closed) return;
+    this.closed = true;
+    while (this.resolvers.length > 0) {
+      const r = this.resolvers.shift();
+      r?.({ value: undefined as unknown as SDKUserMessage, done: true });
+    }
+  }
+
+  [Symbol.asyncIterator](): AsyncIterator<SDKUserMessage> {
+    const self = this;
+    return {
+      next(): Promise<IteratorResult<SDKUserMessage>> {
+        const v = self.buf.shift();
+        if (v) return Promise.resolve({ value: v, done: false });
+        if (self.closed) {
+          return Promise.resolve({
+            value: undefined as unknown as SDKUserMessage,
+            done: true,
+          });
+        }
+        return new Promise((resolve) => self.resolvers.push(resolve));
+      },
+      return(): Promise<IteratorResult<SDKUserMessage>> {
+        self.close();
+        return Promise.resolve({
+          value: undefined as unknown as SDKUserMessage,
+          done: true,
+        });
+      },
+    };
+  }
+}
+
+export interface RunInteractiveInput {
+  auth: AuthContext;
+  /** Override default model. Defaults to claude-opus-4-7. */
+  model?: string;
+  /** Working directory the agent should treat as project root. */
+  cwd?: string;
+  /** Permission mode. Interactive callers usually set bypassPermissions or supply canUseTool. */
+  permissionMode?: Options["permissionMode"];
+  /** Caller-supplied MCP servers (e.g. sandbox-runtime tools). */
+  extraMcpServers?: Record<string, McpServerConfig>;
+  /** Names of tools to allow without prompting. Defaults to read-only set. */
+  allowedTools?: string[];
+  /** Resume a previous session id. */
+  resumeSessionId?: string;
+  /** Optional context appended to the system prompt. */
+  systemContext?: string;
+  /** AbortController to cancel the whole session. */
+  signal?: AbortSignal;
+  /** Stream partial text deltas (default true). */
+  streamDeltas?: boolean;
+  /** Optional permission gate; required if permissionMode is 'default'. */
+  canUseTool?: CanUseTool;
+}
+
+export interface InteractiveSession {
+  /** Async stream of normalized events. The REPL renders these. */
+  events: AsyncGenerator<ThoxEvent>;
+  /** Send a user prompt into the running session. */
+  send(text: string): void;
+  /** Cancel the current turn. The session stays open for the next prompt. */
+  interrupt(): Promise<void>;
+  /** End the session: closes input, ends event stream, aborts. */
+  close(): void;
+}
+
+/**
+ * Open a multi-turn streaming-input session against the Claude Agent SDK.
+ * The CLI REPL calls send() per user line and renders events as they arrive.
+ */
+export function runInteractive(input: RunInteractiveInput): InteractiveSession {
+  const queue = new UserMessageQueue();
+  let internalSessionId: string = crypto.randomUUID();
+  const abort = new AbortController();
+  if (input.signal) {
+    input.signal.addEventListener("abort", () => abort.abort(), { once: true });
+  }
+
+  const mcpServers: Record<string, McpServerConfig> = {
+    "thox-quantum": {
+      type: "sdk",
+      name: "thox-quantum",
+      instance: createThoxQuantumMcpServer().instance,
+    },
+    ...(input.extraMcpServers ?? {}),
+  };
+
+  const streamDeltas = input.streamDeltas ?? true;
+
+  const options: Options = {
+    model: input.model ?? DEFAULT_MODEL,
+    systemPrompt: thoxSystemPrompt(input.systemContext),
+    permissionMode: input.permissionMode ?? "default",
+    allowedTools: input.allowedTools ?? DEFAULT_ALLOWED_TOOLS,
+    mcpServers,
+    env: authToSdkEnv(input.auth),
+    abortController: abort,
+    settingSources: [],
+    includePartialMessages: streamDeltas,
+    ...(input.cwd !== undefined ? { cwd: input.cwd } : {}),
+    ...(input.canUseTool !== undefined ? { canUseTool: input.canUseTool } : {}),
+    ...(input.resumeSessionId !== undefined
+      ? { resume: input.resumeSessionId }
+      : {}),
+  };
+
+  const q = query({ prompt: queue, options });
+
+  async function* eventStream(): AsyncGenerator<ThoxEvent> {
+    try {
+      for await (const message of q) {
+        for (const event of mapSdkMessage(message, internalSessionId)) {
+          if (event.type === "session_start") {
+            internalSessionId = event.sessionId;
+          }
+          yield event;
+        }
+      }
+    } catch (err) {
+      yield {
+        type: "error",
+        sessionId: internalSessionId,
+        message: err instanceof Error ? err.message : String(err),
+      };
+    }
+  }
+
+  return {
+    events: eventStream(),
+    send(text: string): void {
+      queue.push(text);
+    },
+    async interrupt(): Promise<void> {
+      try {
+        await q.interrupt();
+      } catch {
+        // interrupt() is only valid mid-turn; ignore "no active turn" errors.
+      }
+    },
+    close(): void {
+      queue.close();
+      abort.abort();
+    },
+  };
 }

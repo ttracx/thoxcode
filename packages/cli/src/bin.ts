@@ -4,6 +4,7 @@ import type { ThoxEvent } from "thoxcode-core";
 import { runViaDaemon } from "thoxcode-daemon";
 import kleur from "kleur";
 import { bigBanner } from "./banner.js";
+import { runRepl } from "./repl.js";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
@@ -80,14 +81,20 @@ function maybeBanner(noBanner: boolean): void {
 function help() {
   console.log(bigBanner({ version: PKG_VERSION }));
   console.log(kleur.bold("Usage:"));
+  console.log("  thoxcode                     Open interactive chat (REPL)");
   console.log("  thoxcode <prompt>            Run a one-shot task (in-process)");
   console.log("  thoxcode --thoxos <prompt>   Run via the local thoxcoded socket");
   console.log("  thoxcode --socket <path>     Override daemon socket path");
   console.log("  thoxcode --cwd <dir> ...     Override working directory");
-  console.log("  thoxcode --yolo ...          Auto-accept edits (acceptEdits)");
+  console.log("  thoxcode --yolo ...          Bypass all permission prompts");
   console.log("  thoxcode --no-banner ...     Suppress the logo on this run");
   console.log("  thoxcode --version, -v       Print version and exit");
   console.log("  thoxcode --help, -h          Show this help");
+  console.log("");
+  console.log(kleur.bold("Interactive mode:"));
+  console.log("  Run `thoxcode` with no prompt in a terminal to open a chat");
+  console.log("  session. Each line is a new turn; context persists. Slash");
+  console.log("  commands inside the REPL: /help, /clear, /cwd, /exit.");
   console.log("");
   console.log(kleur.bold("Auth:"));
   console.log("  Set ANTHROPIC_API_KEY in your shell. ThoxCode passes it");
@@ -142,9 +149,43 @@ async function main() {
     console.log(`thoxcode ${PKG_VERSION}`);
     process.exit(0);
   }
-  if (args.showHelp || !args.prompt) {
+  if (args.showHelp) {
     help();
-    process.exit(args.showHelp ? 0 : 1);
+    process.exit(0);
+  }
+
+  // No prompt + interactive TTY + not routing through daemon → open REPL.
+  // The daemon's JSONL protocol is one-shot; multi-turn over the socket
+  // is a separate v0.2 feature.
+  if (!args.prompt && process.stdout.isTTY === true && !args.thoxos) {
+    maybeBanner(args.noBanner);
+    let auth;
+    try {
+      auth = resolveAuth({ byokKey: process.env.ANTHROPIC_API_KEY });
+    } catch (e) {
+      if (e instanceof ThoxAuthError) {
+        console.error(kleur.red(`[auth] ${e.message}`));
+        console.error(
+          kleur.dim(
+            "Set ANTHROPIC_API_KEY in your shell, then run `thoxcode` again.",
+          ),
+        );
+        process.exit(2);
+      }
+      throw e;
+    }
+    const code = await runRepl({
+      auth,
+      cwd: args.cwd,
+      version: PKG_VERSION,
+    });
+    process.exit(code);
+  }
+
+  if (!args.prompt) {
+    // Non-TTY (piped) or --thoxos with no prompt → not actionable; show help.
+    help();
+    process.exit(1);
   }
 
   maybeBanner(args.noBanner);

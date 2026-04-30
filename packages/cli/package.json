@@ -1,6 +1,6 @@
 {
   "name": "thoxcode",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "ThoxCode — THOX.ai's branded coding agent. Powered by Claude. Install globally for the `thoxcode` CLI.",
   "keywords": [
     "thoxcode",

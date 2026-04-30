@@ -4,6 +4,31 @@ All notable changes to ThoxCode are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [thoxcode 0.1.5] — 2026-04-30
+
+### Added
+
+- **Interactive chat REPL** — running `thoxcode` with no prompt in a
+  TTY now opens a persistent chat session instead of printing help.
+  Each line is a new turn; the agent keeps full context across turns
+  (built on the Agent SDK's streaming-input mode). Slash commands:
+  `/help`, `/clear`, `/cwd`, `/exit` (also `/quit`, `/q`). Ctrl+C
+  cancels the current turn; press it again at the prompt (or Ctrl+D)
+  to leave.
+- **`thoxcode-core`** exposes `runInteractive(...)` returning an
+  `InteractiveSession { events, send, interrupt, close }`. Hosts can
+  drive a multi-turn agent without re-spawning the SDK each time.
+
+### Notes
+
+- The REPL defaults to `permissionMode: "bypassPermissions"`. Without
+  it, Bash invocations would silently hang (no `canUseTool` callback
+  yet — that's a v0.2 follow-up). The welcome panel calls this out.
+- One-shot mode (`thoxcode "<prompt>"`) is unchanged.
+- `--thoxos` (daemon socket) remains one-shot for now; multi-turn
+  over the JSONL protocol will land alongside the canUseTool work.
+- `thoxcode-core` and `thoxcode-daemon` are bumped to `0.1.3`.
+
 ## [thoxcode 0.1.4] — 2026-04-30
 
 ### Changed
