@@ -2,7 +2,7 @@
 import { createServer, type Socket } from "node:net";
 import { mkdir, unlink, chmod } from "node:fs/promises";
 import { dirname } from "node:path";
-import { runAgent, resolveAuth, ThoxAuthError } from "@thoxcode/core";
+import { runAgent, resolveAuth, ThoxAuthError } from "thoxcode-core";
 import {
   PROTOCOL_VERSION,
   type ClientMessage,

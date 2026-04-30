@@ -11,9 +11,9 @@
   "packageManager": "pnpm@10.33.2",
   "scripts": {
     "build": "pnpm -r --filter './packages/*' build",
-    "dev:cli": "pnpm --filter @thoxcode/cli dev",
-    "dev:bridge": "pnpm --filter @thoxcode/web-bridge dev",
-    "dev:sandbox": "pnpm --filter @thoxcode/sandbox-app dev",
+    "dev:cli": "pnpm --filter thoxcode-cli dev",
+    "dev:bridge": "pnpm --filter thoxcode-web-bridge dev",
+    "dev:sandbox": "pnpm --filter thoxcode-sandbox-app dev",
     "typecheck": "pnpm -r typecheck",
     "clean": "pnpm -r exec rm -rf dist .turbo .next"
   },

@@ -34,7 +34,7 @@ export type ServerMessage =
   | {
       type: "event";
       requestId: string;
-      event: import("@thoxcode/core").ThoxEvent;
+      event: import("thoxcode-core").ThoxEvent;
     }
   | { type: "done"; requestId: string }
   | { type: "error"; requestId?: string; message: string };

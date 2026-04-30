@@ -1,5 +1,5 @@
 {
-  "name": "@thoxcode/web-bridge",
+  "name": "thoxcode-web-bridge",
   "version": "0.1.0",
   "private": true,
   "description": "ThoxCode web bridge — Hono server streaming agent events to sandbox.thox.ai over SSE.",
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.13.7",
-    "@thoxcode/core": "workspace:*",
-    "@thoxcode/sandbox-runtime": "workspace:*",
+    "thoxcode-core": "workspace:*",
+    "thoxcode-sandbox-runtime": "workspace:*",
     "hono": "^4.6.14",
     "jose": "^5.9.6"
   },

@@ -1,5 +1,5 @@
 {
-  "name": "@thoxcode/sandbox-app",
+  "name": "thoxcode-sandbox-app",
   "version": "0.1.0",
   "private": true,
   "description": "sandbox.thox.ai — browser playground for ThoxCode.",

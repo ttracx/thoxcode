@@ -2,12 +2,12 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { streamSSE } from "hono/streaming";
 import { serve } from "@hono/node-server";
-import { runAgent, ThoxAuthError } from "@thoxcode/core";
+import { runAgent, ThoxAuthError } from "thoxcode-core";
 import {
   createSandboxToolServer,
   HOST_TOOLS_TO_DISALLOW,
   SANDBOX_TOOL_NAMES,
-} from "@thoxcode/sandbox-runtime";
+} from "thoxcode-sandbox-runtime";
 import { authenticateRequest } from "./auth.js";
 import { SessionManager } from "./session-manager.js";
 

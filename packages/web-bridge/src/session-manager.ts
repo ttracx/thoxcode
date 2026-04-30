@@ -1,7 +1,7 @@
 import {
   SandboxLease,
   type SandboxLeaseOptions,
-} from "@thoxcode/sandbox-runtime";
+} from "thoxcode-sandbox-runtime";
 
 interface SessionEntry {
   lease: SandboxLease;

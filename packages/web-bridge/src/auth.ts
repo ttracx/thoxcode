@@ -4,7 +4,7 @@ import {
   type JWTPayload,
   type JWTVerifyResult,
 } from "jose";
-import { resolveAuth, ThoxAuthError, type AuthContext } from "@thoxcode/core";
+import { resolveAuth, ThoxAuthError, type AuthContext } from "thoxcode-core";
 
 export interface BridgeAuthInput {
   /** Header value of `x-thoxcode-byok` (raw user-supplied Anthropic key) */

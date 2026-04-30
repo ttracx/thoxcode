@@ -1,27 +1,59 @@
 {
-  "name": "@thoxcode/cli",
+  "name": "thoxcode",
   "version": "0.1.0",
-  "private": true,
-  "description": "ThoxCode terminal client. Powered by Claude.",
+  "description": "ThoxCode — Thox.ai's branded coding agent. Powered by Claude. Install globally for the `thoxcode` CLI.",
+  "keywords": [
+    "thoxcode",
+    "thox",
+    "claude",
+    "anthropic",
+    "agent-sdk",
+    "ai",
+    "coding-agent",
+    "cli"
+  ],
+  "homepage": "https://github.com/ttracx/thoxcode#readme",
+  "bugs": {
+    "url": "https://github.com/ttracx/thoxcode/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ttracx/thoxcode.git",
+    "directory": "packages/cli"
+  },
+  "license": "MIT",
+  "author": "Tommy Xaypanya <tommy@vibecaas.com> (https://thox.ai)",
   "type": "module",
   "bin": {
     "thoxcode": "./dist/bin.js"
   },
   "main": "./dist/bin.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/bin.ts",
     "start": "node dist/bin.js",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@thoxcode/core": "workspace:*",
-    "@thoxcode/daemon": "workspace:*",
+    "thoxcode-core": "workspace:*",
+    "thoxcode-daemon": "workspace:*",
     "kleur": "^4.1.5"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

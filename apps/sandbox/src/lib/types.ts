@@ -1,4 +1,4 @@
-// Mirrors @thoxcode/core's ThoxEvent. We duplicate (rather than import) to
+// Mirrors thoxcode-core's ThoxEvent. We duplicate (rather than import) to
 // keep the browser bundle free of any Node-targeted code.
 export type ThoxEvent =
   | { type: "session_start"; sessionId: string; model: string; tools: string[] }

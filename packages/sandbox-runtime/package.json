@@ -1,25 +1,58 @@
 {
-  "name": "@thoxcode/sandbox-runtime",
+  "name": "thoxcode-sandbox-runtime",
   "version": "0.1.0",
-  "private": true,
-  "description": "Vercel Sandbox tool adapters for ThoxCode — Bash/Read/Write/Edit/Ls executed inside per-session Firecracker microVMs.",
+  "description": "Vercel Sandbox MCP tool adapters for ThoxCode — Bash/Read/Write/Edit/Ls executed inside per-session Firecracker microVMs.",
+  "keywords": [
+    "thoxcode",
+    "thox",
+    "vercel-sandbox",
+    "claude",
+    "agent-sdk",
+    "mcp",
+    "sandbox",
+    "firecracker"
+  ],
+  "homepage": "https://github.com/ttracx/thoxcode#readme",
+  "bugs": {
+    "url": "https://github.com/ttracx/thoxcode/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ttracx/thoxcode.git",
+    "directory": "packages/sandbox-runtime"
+  },
+  "license": "MIT",
+  "author": "Tommy Xaypanya <tommy@vibecaas.com> (https://thox.ai)",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": "./dist/index.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json --watch",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.2.123",
+    "thoxcode-core": "workspace:*",
     "@vercel/sandbox": "^1.10.0",
     "zod": "^4.0.0"
   },
   "devDependencies": {
     "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

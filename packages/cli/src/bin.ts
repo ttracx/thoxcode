@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import { runAgent, resolveAuth, ThoxAuthError } from "@thoxcode/core";
-import type { ThoxEvent } from "@thoxcode/core";
-import { runViaDaemon } from "@thoxcode/daemon";
+import { runAgent, resolveAuth, ThoxAuthError } from "thoxcode-core";
+import type { ThoxEvent } from "thoxcode-core";
+import { runViaDaemon } from "thoxcode-daemon";
 import kleur from "kleur";
 import { banner } from "./banner.js";
 

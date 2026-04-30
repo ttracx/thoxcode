@@ -1,5 +1,5 @@
 import { createConnection, type Socket } from "node:net";
-import type { ThoxEvent } from "@thoxcode/core";
+import type { ThoxEvent } from "thoxcode-core";
 import {
   PROTOCOL_VERSION,
   type ClientMessage,
